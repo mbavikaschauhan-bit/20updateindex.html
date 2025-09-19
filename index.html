@@ -946,6 +946,9 @@
                 <a href="#" data-page="challenge" class="nav-item flex items-center px-4 py-2 rounded-md" style="color: var(--text-secondary);">
                     <i data-feather="award" class="mr-3 h-5 w-5"></i> <span>Challenge</span>
                 </a>
+                <a href="#" data-page="ai-analyst" class="nav-item flex items-center px-4 py-2 rounded-md" style="color: var(--text-secondary);">
+                    <i data-feather="cpu" class="mr-3 h-5 w-5"></i> <span>AI Analyst</span>
+                </a>
                 <a href="#" data-page="profile" class="nav-item flex items-center px-4 py-2 rounded-md" style="color: var(--text-secondary);">
                     <i data-feather="user" class="mr-3 h-5 w-5"></i> <span>User Profile</span>
                 </a>
@@ -2086,6 +2089,153 @@
                                             <p class="text-sm" style="color: var(--text-secondary);">Member Since</p>
                                             <p id="profile-member-since" class="font-semibold"></p>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Analyst Page -->
+                    <div id="ai-analyst" class="page">
+                        <div class="space-y-8">
+                            <!-- Header Section -->
+                            <div class="text-center py-8">
+                                <div class="flex items-center justify-center mb-4">
+                                    <i data-feather="cpu" class="h-8 w-8 mr-3" style="color: var(--text-primary);"></i>
+                                    <h1 class="text-3xl font-bold" style="color: var(--text-primary);">AI-Powered Trading Insights</h1>
+                                </div>
+                                <p class="text-lg" style="color: var(--text-secondary);">Personalized suggestions based on your trade history.</p>
+                                <div id="ai-summary-highlight" class="mt-4 text-xl font-semibold" style="color: var(--text-primary);">
+                                    <!-- Dynamic summary will be inserted here -->
+                                </div>
+                            </div>
+
+                            <!-- Alert Cards Section -->
+                            <div id="ai-alert-cards" class="space-y-4">
+                                <!-- Alert cards will be dynamically inserted here -->
+                            </div>
+
+                            <!-- Summary Cards Section -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <div class="p-6 rounded-lg shadow-sm" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
+                                    <div class="flex items-center">
+                                        <div class="p-2 rounded-lg" style="background-color: var(--bg-secondary);">
+                                            <i data-feather="trending-up" class="h-6 w-6" style="color: var(--text-primary);"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium" style="color: var(--text-secondary);">Total Trades</p>
+                                            <p id="ai-total-trades" class="text-2xl font-bold" style="color: var(--text-primary);">0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-6 rounded-lg shadow-sm" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
+                                    <div class="flex items-center">
+                                        <div class="p-2 rounded-lg" style="background-color: var(--bg-secondary);">
+                                            <i data-feather="target" class="h-6 w-6" style="color: var(--text-primary);"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium" style="color: var(--text-secondary);">Win Rate</p>
+                                            <p id="ai-win-rate" class="text-2xl font-bold" style="color: var(--text-primary);">0%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-6 rounded-lg shadow-sm" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
+                                    <div class="flex items-center">
+                                        <div class="p-2 rounded-lg" style="background-color: var(--bg-secondary);">
+                                            <i class="h-6 w-6 flex items-center justify-center font-bold text-lg not-italic" style="color: var(--text-primary);">₹</i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium" style="color: var(--text-secondary);">Avg P&L per Trade</p>
+                                            <p id="ai-avg-pnl" class="text-2xl font-bold" style="color: var(--text-primary);">₹0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-6 rounded-lg shadow-sm" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
+                                    <div class="flex items-center">
+                                        <div class="p-2 rounded-lg" style="background-color: var(--bg-secondary);">
+                                            <i data-feather="bar-chart-2" class="h-6 w-6" style="color: var(--text-primary);"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium" style="color: var(--text-secondary);">Net P&L</p>
+                                            <p id="ai-net-pnl" class="text-2xl font-bold" style="color: var(--text-primary);">₹0</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Trader Personality Profile Section -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <div class="p-6 rounded-lg shadow-sm" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
+                                    <h3 class="text-xl font-bold mb-4" style="color: var(--text-primary);">Trader Personality Profile</h3>
+                                    <div id="ai-trader-profile" class="space-y-4">
+                                        <!-- Trader profile will be dynamically inserted here -->
+                                    </div>
+                                </div>
+                                <div class="p-6 rounded-lg shadow-sm" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
+                                    <h3 class="text-xl font-bold mb-4" style="color: var(--text-primary);">Behavior & Psychology</h3>
+                                    <div id="ai-behavior-insights" class="space-y-4">
+                                        <!-- Behavior insights will be dynamically inserted here -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Performance Section -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <div class="p-6 rounded-lg shadow-sm" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
+                                    <h3 class="text-xl font-bold mb-4" style="color: var(--text-primary);">Top 5 Winners</h3>
+                                    <div id="ai-top-winners" class="space-y-2">
+                                        <!-- Top winners will be dynamically inserted here -->
+                                    </div>
+                                </div>
+                                <div class="p-6 rounded-lg shadow-sm" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
+                                    <h3 class="text-xl font-bold mb-4" style="color: var(--text-primary);">Top 5 Losers</h3>
+                                    <div id="ai-top-losers" class="space-y-2">
+                                        <!-- Top losers will be dynamically inserted here -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Risk Discipline Panel -->
+                            <div class="p-6 rounded-lg shadow-sm" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
+                                <h3 class="text-xl font-bold mb-4" style="color: var(--text-primary);">Risk Discipline</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div class="text-center">
+                                        <p class="text-sm font-medium" style="color: var(--text-secondary);">Stop Loss Usage</p>
+                                        <p id="ai-stop-loss-usage" class="text-2xl font-bold mt-2" style="color: var(--text-primary);">N/A</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm font-medium" style="color: var(--text-secondary);">Avg Stop Loss</p>
+                                        <p id="ai-avg-stop-loss" class="text-2xl font-bold mt-2" style="color: var(--text-primary);">N/A</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-sm font-medium" style="color: var(--text-secondary);">Oversize Positions</p>
+                                        <p id="ai-oversize-positions" class="text-2xl font-bold mt-2" style="color: var(--text-primary);">0</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- AI Recommendations Section -->
+                            <div class="p-6 rounded-lg shadow-sm" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
+                                <h3 class="text-xl font-bold mb-4" style="color: var(--text-primary);">AI Recommendations</h3>
+                                <div id="ai-recommendations" class="space-y-3">
+                                    <!-- AI recommendations will be dynamically inserted here -->
+                                </div>
+                            </div>
+
+                            <!-- Consistency & Growth Stats -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div class="p-6 rounded-lg shadow-sm" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
+                                    <h3 class="text-xl font-bold mb-4" style="color: var(--text-primary);">Consistency Score</h3>
+                                    <div class="text-center">
+                                        <p id="ai-consistency-score" class="text-4xl font-bold" style="color: var(--text-primary);">0%</p>
+                                        <p class="text-sm mt-2" style="color: var(--text-secondary);">Profitable trading days</p>
+                                    </div>
+                                </div>
+                                <div class="p-6 rounded-lg shadow-sm" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
+                                    <h3 class="text-xl font-bold mb-4" style="color: var(--text-primary);">Growth Projection</h3>
+                                    <div class="text-center">
+                                        <p id="ai-growth-projection" class="text-4xl font-bold" style="color: var(--text-primary);">₹0</p>
+                                        <p class="text-sm mt-2" style="color: var(--text-secondary);">Expected monthly growth</p>
                                     </div>
                                 </div>
                             </div>
@@ -3279,6 +3429,9 @@
                 renderChallengeHistory();
                 renderAchievements();
             }
+            if (pageId === 'ai-analyst') {
+                renderAIAnalyst();
+            }
         };
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
@@ -3913,9 +4066,19 @@
                             <td class="px-6 py-3">${item.type}</td>
                             <td class="px-6 py-3">${formatCurrency(item.amount || 0)}</td>
                             <td class="px-6 py-3">${item.notes || '—'}</td>
-                            <td class="px-6 py-3 space-x-2">
-                                <button class="text-blue-600 underline text-xs" data-ledger-action="edit" data-id="${item.id}">Edit</button>
-                                <button class="text-red-600 underline text-xs" data-ledger-action="delete" data-id="${item.id}">Delete</button>
+                            <td class="px-6 py-3 actions-cell">
+                                <button class="action-icon" data-ledger-action="edit" data-id="${item.id}" title="Edit Entry">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                </button>
+                                <button class="action-icon" data-ledger-action="delete" data-id="${item.id}" title="Delete Entry">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="3,6 5,6 21,6"></polyline>
+                                        <path d="M19,6v14a2,2 0 0,1 -2,2H7a2,2 0 0,1 -2,-2V6m3,0V4a2,2 0 0,1 2,-2h4a2,2 0 0,1 2,2v2"></path>
+                                    </svg>
+                                </button>
                             </td>
                         </tr>
                     `).join('');
@@ -8881,6 +9044,965 @@
             }
             
             modal.classList.remove('hidden');
+        };
+
+        // --- AI ANALYST FUNCTIONALITY ---
+        const renderAIAnalyst = () => {
+            console.debug('AI Analyst: Starting analysis...');
+            
+            // Get trade data - primary source: appState.trades, fallback: DOM parsing
+            let trades = [];
+            try {
+                trades = appState.trades || [];
+                console.debug('AI Analyst: Using appState.trades, count:', trades.length);
+            } catch (error) {
+                console.warn('AI Analyst: Error accessing appState.trades, falling back to DOM parsing', error);
+                trades = parseTradesFromDOM();
+            }
+            
+            // Calculate core metrics with defensive checks
+            const metrics = calculateTradeMetrics(trades);
+            console.debug('AI Analyst: Calculated metrics:', metrics);
+            
+            // Update summary cards
+            updateSummaryCards(metrics);
+            
+            // Generate and display alert cards
+            const alerts = generateAlertCards(metrics, trades);
+            displayAlertCards(alerts);
+            
+            // Determine trader personality profile
+            const traderProfile = determineTraderProfile(metrics, trades);
+            displayTraderProfile(traderProfile);
+            
+            // Generate behavior insights
+            const behaviorInsights = analyzeBehaviorPatterns(trades, metrics);
+            displayBehaviorInsights(behaviorInsights);
+            
+            // Update performance sections
+            updatePerformanceSections(trades, metrics);
+            
+            // Update risk discipline panel
+            updateRiskDisciplinePanel(metrics, trades);
+            
+            // Generate AI recommendations
+            const recommendations = generateAIRecommendations(metrics, trades, traderProfile);
+            displayAIRecommendations(recommendations);
+            
+            // Update consistency and growth stats
+            updateConsistencyAndGrowth(metrics, trades);
+            
+            // Update summary highlight
+            updateSummaryHighlight(metrics, traderProfile);
+            
+            console.debug('AI Analyst: Analysis complete');
+        };
+        
+        // Parse trades from DOM if appState.trades is not available
+        const parseTradesFromDOM = () => {
+            console.debug('AI Analyst: Parsing trades from DOM...');
+            const trades = [];
+            try {
+                const tbody = document.getElementById('trade-history-tbody');
+                if (!tbody) {
+                    console.warn('AI Analyst: Trade history table not found');
+                    return [];
+                }
+                
+                const rows = tbody.querySelectorAll('tr');
+                rows.forEach((row, index) => {
+                    try {
+                        const cells = row.querySelectorAll('td');
+                        if (cells.length >= 10) {
+                            const trade = {
+                                id: `dom_${index}`,
+                                asset: cells[0]?.textContent?.trim() || '',
+                                pnl: parseFloat(cells[1]?.textContent?.replace(/[₹,]/g, '')) || 0,
+                                status: cells[2]?.textContent?.trim() || '',
+                                entry_price: parseFloat(cells[3]?.textContent?.replace(/[₹,]/g, '')) || 0,
+                                direction: cells[4]?.textContent?.trim() || '',
+                                entry_date: cells[5]?.textContent?.trim() || '',
+                                stop_loss: parseFloat(cells[6]?.textContent?.replace(/[₹,]/g, '')) || null,
+                                quantity: parseFloat(cells[7]?.textContent?.replace(/[,]/g, '')) || 0,
+                                exit_price: parseFloat(cells[8]?.textContent?.replace(/[₹,]/g, '')) || null,
+                                exit_date: cells[9]?.textContent?.trim() || null
+                            };
+                            trades.push(trade);
+                        }
+                    } catch (error) {
+                        console.warn('AI Analyst: Error parsing trade row', index, error);
+                    }
+                });
+                console.debug('AI Analyst: Parsed', trades.length, 'trades from DOM');
+            } catch (error) {
+                console.error('AI Analyst: Error parsing trades from DOM', error);
+            }
+            return trades;
+        };
+        
+        // Calculate comprehensive trade metrics
+        const calculateTradeMetrics = (trades) => {
+            console.debug('AI Analyst: Calculating metrics for', trades.length, 'trades');
+            
+            if (!trades || trades.length === 0) {
+                return {
+                    totalTrades: 0,
+                    winningTrades: 0,
+                    losingTrades: 0,
+                    winRate: 0,
+                    totalPnL: 0,
+                    avgPnL: 0,
+                    avgWin: 0,
+                    avgLoss: 0,
+                    riskRewardRatio: 0,
+                    maxDrawdown: 0,
+                    stopLossUsage: 0,
+                    avgStopLoss: 0,
+                    avgHoldingDays: 0,
+                    oversizePositions: 0,
+                    consecutiveWinStreak: 0,
+                    consecutiveLossStreak: 0,
+                    profitableDays: 0,
+                    totalTradingDays: 0
+                };
+            }
+            
+            // Filter closed trades for P&L calculations
+            const closedTrades = trades.filter(t => 
+                t.exit_date && t.exit_price && 
+                (t.status === 'Closed' || t.status === 'Partial Exit')
+            );
+            
+            console.debug('AI Analyst: Closed trades count:', closedTrades.length);
+            
+            // Basic metrics
+            const totalTrades = closedTrades.length;
+            let totalPnL = 0;
+            let winningTrades = 0;
+            let losingTrades = 0;
+            let totalWinPnL = 0;
+            let totalLossPnL = 0;
+            let stopLossCount = 0;
+            let totalStopLoss = 0;
+            let totalHoldingDays = 0;
+            let validHoldingDays = 0;
+            let oversizePositions = 0;
+            
+            // Calculate daily P&L for consistency metrics
+            const dailyPnL = {};
+            
+            closedTrades.forEach(trade => {
+                try {
+                    // Calculate P&L - use existing calculateNetPnl if available, otherwise calculate manually
+                    let pnl = 0;
+                    if (typeof calculateNetPnl === 'function') {
+                        pnl = calculateNetPnl(trade);
+                    } else {
+                        // Manual P&L calculation
+                        const entryPrice = parseFloat(trade.entry_price) || 0;
+                        const exitPrice = parseFloat(trade.exit_price) || 0;
+                        const quantity = parseFloat(trade.quantity) || 0;
+                        const direction = trade.direction === 'Short' ? -1 : 1;
+                        const grossPnL = (exitPrice - entryPrice) * quantity * direction;
+                        const brokerage = parseFloat(trade.brokerage) || 0;
+                        const otherFees = parseFloat(trade.other_fees) || 0;
+                        pnl = grossPnL - brokerage - otherFees;
+                    }
+                    
+                    if (isNaN(pnl)) pnl = 0;
+                    
+                    totalPnL += pnl;
+                    
+                    if (pnl > 0) {
+                        winningTrades++;
+                        totalWinPnL += pnl;
+                    } else if (pnl < 0) {
+                        losingTrades++;
+                        totalLossPnL += Math.abs(pnl);
+                    }
+                    
+                    // Stop loss analysis
+                    if (trade.stop_loss && !isNaN(parseFloat(trade.stop_loss))) {
+                        stopLossCount++;
+                        totalStopLoss += parseFloat(trade.stop_loss);
+                    }
+                    
+                    // Holding days calculation
+                    if (trade.entry_date && trade.exit_date) {
+                        try {
+                            const entryDate = new Date(trade.entry_date);
+                            const exitDate = new Date(trade.exit_date);
+                            if (!isNaN(entryDate.getTime()) && !isNaN(exitDate.getTime())) {
+                                const holdingDays = (exitDate - entryDate) / (1000 * 60 * 60 * 24);
+                                totalHoldingDays += holdingDays;
+                                validHoldingDays++;
+                            }
+                        } catch (error) {
+                            console.warn('AI Analyst: Error calculating holding days for trade', trade.id, error);
+                        }
+                    }
+                    
+                    // Oversize position detection (heuristic: position value > 20% of assumed account balance)
+                    const positionValue = (parseFloat(trade.entry_price) || 0) * (parseFloat(trade.quantity) || 0);
+                    const assumedAccountBalance = 100000; // Default assumption, could be made configurable
+                    if (positionValue > assumedAccountBalance * 0.2) {
+                        oversizePositions++;
+                    }
+                    
+                    // Daily P&L aggregation for consistency metrics
+                    if (trade.exit_date) {
+                        try {
+                            const exitDate = new Date(trade.exit_date);
+                            if (!isNaN(exitDate.getTime())) {
+                                const dateKey = exitDate.toISOString().split('T')[0];
+                                dailyPnL[dateKey] = (dailyPnL[dateKey] || 0) + pnl;
+                            }
+                        } catch (error) {
+                            console.warn('AI Analyst: Error processing exit date for daily P&L', trade.exit_date, error);
+                        }
+                    }
+                    
+                } catch (error) {
+                    console.warn('AI Analyst: Error processing trade for metrics', trade.id, error);
+                }
+            });
+            
+            // Calculate derived metrics
+            const winRate = totalTrades > 0 ? (winningTrades / totalTrades) * 100 : 0;
+            const avgPnL = totalTrades > 0 ? totalPnL / totalTrades : 0;
+            const avgWin = winningTrades > 0 ? totalWinPnL / winningTrades : 0;
+            const avgLoss = losingTrades > 0 ? totalLossPnL / losingTrades : 0;
+            const riskRewardRatio = avgLoss > 0 ? avgWin / avgLoss : 0;
+            const stopLossUsage = totalTrades > 0 ? (stopLossCount / totalTrades) * 100 : 0;
+            const avgStopLoss = stopLossCount > 0 ? totalStopLoss / stopLossCount : 0;
+            const avgHoldingDays = validHoldingDays > 0 ? totalHoldingDays / validHoldingDays : 0;
+            
+            // Calculate streaks
+            const streaks = calculateStreaks(closedTrades);
+            
+            // Calculate consistency metrics
+            const tradingDays = Object.keys(dailyPnL);
+            const profitableDays = tradingDays.filter(date => dailyPnL[date] > 0).length;
+            const totalTradingDays = tradingDays.length;
+            
+            // Calculate max drawdown (simplified)
+            const maxDrawdown = calculateMaxDrawdown(closedTrades);
+            
+            const metrics = {
+                totalTrades,
+                winningTrades,
+                losingTrades,
+                winRate,
+                totalPnL,
+                avgPnL,
+                avgWin,
+                avgLoss,
+                riskRewardRatio,
+                maxDrawdown,
+                stopLossUsage,
+                avgStopLoss,
+                avgHoldingDays,
+                oversizePositions,
+                consecutiveWinStreak: streaks.maxWinStreak,
+                consecutiveLossStreak: streaks.maxLossStreak,
+                profitableDays,
+                totalTradingDays
+            };
+            
+            console.debug('AI Analyst: Final metrics:', metrics);
+            return metrics;
+        };
+        
+        // Calculate consecutive win/loss streaks
+        const calculateStreaks = (trades) => {
+            if (!trades || trades.length === 0) return { maxWinStreak: 0, maxLossStreak: 0 };
+            
+            let maxWinStreak = 0;
+            let maxLossStreak = 0;
+            let currentWinStreak = 0;
+            let currentLossStreak = 0;
+            
+            // Sort trades by exit date
+            const sortedTrades = [...trades].sort((a, b) => {
+                const dateA = new Date(a.exit_date || a.entry_date);
+                const dateB = new Date(b.exit_date || b.entry_date);
+                return dateA - dateB;
+            });
+            
+            sortedTrades.forEach(trade => {
+                try {
+                    let pnl = 0;
+                    if (typeof calculateNetPnl === 'function') {
+                        pnl = calculateNetPnl(trade);
+                    } else {
+                        // Manual calculation fallback
+                        const entryPrice = parseFloat(trade.entry_price) || 0;
+                        const exitPrice = parseFloat(trade.exit_price) || 0;
+                        const quantity = parseFloat(trade.quantity) || 0;
+                        const direction = trade.direction === 'Short' ? -1 : 1;
+                        pnl = (exitPrice - entryPrice) * quantity * direction;
+                    }
+                    
+                    if (pnl > 0) {
+                        currentWinStreak++;
+                        currentLossStreak = 0;
+                        maxWinStreak = Math.max(maxWinStreak, currentWinStreak);
+                    } else if (pnl < 0) {
+                        currentLossStreak++;
+                        currentWinStreak = 0;
+                        maxLossStreak = Math.max(maxLossStreak, currentLossStreak);
+                    }
+                } catch (error) {
+                    console.warn('AI Analyst: Error calculating streak for trade', trade.id, error);
+                }
+            });
+            
+            return { maxWinStreak, maxLossStreak };
+        };
+        
+        // Calculate max drawdown (simplified peak-to-trough)
+        const calculateMaxDrawdown = (trades) => {
+            if (!trades || trades.length === 0) return 0;
+            
+            let runningPnL = 0;
+            let peak = 0;
+            let maxDrawdown = 0;
+            
+            // Sort trades by exit date
+            const sortedTrades = [...trades].sort((a, b) => {
+                const dateA = new Date(a.exit_date || a.entry_date);
+                const dateB = new Date(b.exit_date || b.entry_date);
+                return dateA - dateB;
+            });
+            
+            sortedTrades.forEach(trade => {
+                try {
+                    let pnl = 0;
+                    if (typeof calculateNetPnl === 'function') {
+                        pnl = calculateNetPnl(trade);
+                    } else {
+                        // Manual calculation fallback
+                        const entryPrice = parseFloat(trade.entry_price) || 0;
+                        const exitPrice = parseFloat(trade.exit_price) || 0;
+                        const quantity = parseFloat(trade.quantity) || 0;
+                        const direction = trade.direction === 'Short' ? -1 : 1;
+                        pnl = (exitPrice - entryPrice) * quantity * direction;
+                    }
+                    
+                    runningPnL += pnl;
+                    peak = Math.max(peak, runningPnL);
+                    const drawdown = peak - runningPnL;
+                    maxDrawdown = Math.max(maxDrawdown, drawdown);
+                } catch (error) {
+                    console.warn('AI Analyst: Error calculating drawdown for trade', trade.id, error);
+                }
+            });
+            
+            return maxDrawdown;
+        };
+        
+        // Update summary cards with calculated metrics
+        const updateSummaryCards = (metrics) => {
+            try {
+                document.getElementById('ai-total-trades').textContent = metrics.totalTrades || 0;
+                document.getElementById('ai-win-rate').textContent = `${(metrics.winRate || 0).toFixed(1)}%`;
+                document.getElementById('ai-avg-pnl').textContent = formatCurrency(metrics.avgPnL || 0);
+                document.getElementById('ai-net-pnl').textContent = formatCurrency(metrics.totalPnL || 0);
+            } catch (error) {
+                console.error('AI Analyst: Error updating summary cards', error);
+            }
+        };
+        
+        // Generate alert cards based on metrics and trade data
+        const generateAlertCards = (metrics, trades) => {
+            const alerts = [];
+            
+            try {
+                // Risk Management Alert - low stop loss usage
+                if (metrics.stopLossUsage < 20 && metrics.totalTrades > 5) {
+                    alerts.push({
+                        type: 'risk',
+                        icon: 'alert-triangle',
+                        title: 'Risk Management Alert',
+                        message: `${metrics.totalTrades - Math.floor(metrics.totalTrades * metrics.stopLossUsage / 100)} trades without stop loss`,
+                        recommendation: 'Consider setting stop losses to limit downside risk and protect your capital.'
+                    });
+                }
+                
+                // Overtrading Alert - high frequency trading detected
+                const tradingDays = metrics.totalTradingDays || 1;
+                const tradesPerDay = metrics.totalTrades / tradingDays;
+                if (tradesPerDay > 5 && metrics.totalTrades > 20) {
+                    alerts.push({
+                        type: 'overtrading',
+                        icon: 'zap',
+                        title: 'Overtrading Alert',
+                        message: `Averaging ${tradesPerDay.toFixed(1)} trades per day - burst trading detected`,
+                        recommendation: 'Consider reducing trade frequency and focusing on higher quality setups.'
+                    });
+                }
+                
+                // Streak Alert - significant consecutive losses
+                if (metrics.consecutiveLossStreak >= 5) {
+                    alerts.push({
+                        type: 'streak',
+                        icon: 'trending-down',
+                        title: 'Loss Streak Alert',
+                        message: `Maximum consecutive losses: ${metrics.consecutiveLossStreak}`,
+                        recommendation: 'Review your strategy and consider taking a break to reset your mindset.'
+                    });
+                } else if (metrics.consecutiveWinStreak >= 8) {
+                    alerts.push({
+                        type: 'streak',
+                        icon: 'trending-up',
+                        title: 'Win Streak Alert',
+                        message: `Maximum consecutive wins: ${metrics.consecutiveWinStreak}`,
+                        recommendation: 'Stay disciplined and avoid overconfidence - maintain your risk management.'
+                    });
+                }
+                
+                // Oversize Position Alert
+                if (metrics.oversizePositions > 0) {
+                    alerts.push({
+                        type: 'position-size',
+                        icon: 'shield',
+                        title: 'Position Size Alert',
+                        message: `${metrics.oversizePositions} trades with large position sizes detected`,
+                        recommendation: 'Review position sizing to ensure it aligns with your risk tolerance.'
+                    });
+                }
+                
+            } catch (error) {
+                console.error('AI Analyst: Error generating alert cards', error);
+            }
+            
+            return alerts;
+        };
+        
+        // Display alert cards in the UI
+        const displayAlertCards = (alerts) => {
+            try {
+                const alertContainer = document.getElementById('ai-alert-cards');
+                if (!alertContainer) return;
+                
+                if (alerts.length === 0) {
+                    alertContainer.innerHTML = `
+                        <div class="p-4 rounded-lg shadow-sm text-center" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color);">
+                            <i data-feather="check-circle" class="h-8 w-8 mx-auto mb-2" style="color: #10b981;"></i>
+                            <p style="color: var(--text-primary);">No alerts - Your trading looks healthy!</p>
+                        </div>
+                    `;
+                } else {
+                    alertContainer.innerHTML = alerts.map(alert => `
+                        <div class="p-4 rounded-lg shadow-sm border-l-4 ${getAlertColor(alert.type)}" style="background-color: var(--bg-primary); border-color: var(--border-color);">
+                            <div class="flex items-start">
+                                <i data-feather="${alert.icon}" class="h-6 w-6 mr-3 mt-1" style="color: ${getAlertIconColor(alert.type)};"></i>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold mb-1" style="color: var(--text-primary);">${alert.title}</h4>
+                                    <p class="text-sm mb-2" style="color: var(--text-secondary);">${alert.message}</p>
+                                    <p class="text-sm font-medium" style="color: var(--text-primary);">${alert.recommendation}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+                
+                // Replace feather icons
+                setTimeout(() => feather.replace(), 100);
+            } catch (error) {
+                console.error('AI Analyst: Error displaying alert cards', error);
+            }
+        };
+        
+        // Get alert card styling based on type
+        const getAlertColor = (type) => {
+            switch (type) {
+                case 'risk': return 'border-red-500';
+                case 'overtrading': return 'border-yellow-500';
+                case 'streak': return 'border-blue-500';
+                case 'position-size': return 'border-orange-500';
+                default: return 'border-gray-500';
+            }
+        };
+        
+        const getAlertIconColor = (type) => {
+            switch (type) {
+                case 'risk': return '#ef4444';
+                case 'overtrading': return '#eab308';
+                case 'streak': return '#3b82f6';
+                case 'position-size': return '#f97316';
+                default: return '#6b7280';
+            }
+        };
+        
+        // Determine trader personality profile based on metrics and trades
+        const determineTraderProfile = (metrics, trades) => {
+            console.debug('AI Analyst: Determining trader profile...');
+            
+            try {
+                // Profile rules based on trading patterns
+                const stopLossUsage = metrics.stopLossUsage || 0;
+                const avgHoldingDays = metrics.avgHoldingDays || 0;
+                const winRate = metrics.winRate || 0;
+                const oversizePositions = metrics.oversizePositions || 0;
+                const totalTrades = metrics.totalTrades || 0;
+                
+                // The Risk-Taker: high % trades without SL or large avg position size vs account
+                if (stopLossUsage < 40 || oversizePositions > totalTrades * 0.3) {
+                    return {
+                        type: 'The Risk-Taker',
+                        description: 'You tend to take on significant risks, often trading without stop losses or with large position sizes. This can lead to both big wins and substantial losses.',
+                        tips: [
+                            'Implement strict stop-loss rules to protect your capital from large drawdowns.',
+                            'Reduce position sizes after experiencing losses to preserve trading capital.'
+                        ],
+                        color: '#ef4444'
+                    };
+                }
+                
+                // The Scalper: most trades < 1 day, many small P&L
+                else if (avgHoldingDays < 1 && totalTrades > 20) {
+                    return {
+                        type: 'The Scalper',
+                        description: 'You prefer quick, short-term trades with small profit targets. You focus on high-frequency trading with rapid entry and exit.',
+                        tips: [
+                            'Focus on transaction costs - high frequency trading can erode profits through fees.',
+                            'Maintain strict discipline with entry/exit rules to avoid emotional decisions.'
+                        ],
+                        color: '#f59e0b'
+                    };
+                }
+                
+                // The Swinger: average holding > 2 days, P&L from swing trades
+                else if (avgHoldingDays > 2 && metrics.totalPnL > 0) {
+                    return {
+                        type: 'The Swinger',
+                        description: 'You prefer holding positions for several days or weeks, capitalizing on medium-term price movements and trends.',
+                        tips: [
+                            'Use wider stop losses to accommodate normal price fluctuations in swing trades.',
+                            'Focus on fundamental analysis alongside technical patterns for better entries.'
+                        ],
+                        color: '#10b981'
+                    };
+                }
+                
+                // The Disciplined Trader: high win-rate and consistent risk rules
+                else if (winRate > 65 && stopLossUsage > 70) {
+                    return {
+                        type: 'The Disciplined Trader',
+                        description: 'You maintain consistent risk management practices and achieve steady results through disciplined execution of your trading strategy.',
+                        tips: [
+                            'Continue your systematic approach - consistency is key to long-term success.',
+                            'Consider gradually increasing position sizes as your track record strengthens.'
+                        ],
+                        color: '#3b82f6'
+                    };
+                }
+                
+                // Default: The Learning Trader
+                else {
+                    return {
+                        type: 'The Learning Trader',
+                        description: 'You are developing your trading style and building experience. Your patterns show a mix of different approaches as you find what works best.',
+                        tips: [
+                            'Focus on developing consistent rules for entry, exit, and risk management.',
+                            'Keep detailed records to identify which strategies work best for your style.'
+                        ],
+                        color: '#8b5cf6'
+                    };
+                }
+            } catch (error) {
+                console.error('AI Analyst: Error determining trader profile', error);
+                return {
+                    type: 'Profile Analysis Unavailable',
+                    description: 'Unable to determine trading profile. More trade data may be needed.',
+                    tips: ['Continue trading and return for updated analysis.'],
+                    color: '#6b7280'
+                };
+            }
+        };
+        
+        // Display trader profile in the UI
+        const displayTraderProfile = (profile) => {
+            try {
+                const profileContainer = document.getElementById('ai-trader-profile');
+                if (!profileContainer) return;
+                
+                profileContainer.innerHTML = `
+                    <div class="flex items-center mb-3">
+                        <div class="w-4 h-4 rounded-full mr-3" style="background-color: ${profile.color};"></div>
+                        <h4 class="text-lg font-semibold" style="color: var(--text-primary);">${profile.type}</h4>
+                    </div>
+                    <p class="text-sm mb-4" style="color: var(--text-secondary);">${profile.description}</p>
+                    <div class="space-y-2">
+                        <h5 class="font-medium" style="color: var(--text-primary);">Action Tips:</h5>
+                        ${profile.tips.map(tip => `
+                            <div class="flex items-start">
+                                <i data-feather="arrow-right" class="h-4 w-4 mr-2 mt-0.5" style="color: ${profile.color};"></i>
+                                <p class="text-sm" style="color: var(--text-secondary);">${tip}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                // Replace feather icons
+                setTimeout(() => feather.replace(), 100);
+            } catch (error) {
+                console.error('AI Analyst: Error displaying trader profile', error);
+            }
+        };
+        
+        // Analyze behavior patterns for psychological insights
+        const analyzeBehaviorPatterns = (trades, metrics) => {
+            const insights = [];
+            
+            try {
+                // Revenge trading detection - large losses followed by increased position sizes
+                const sortedTrades = [...trades].sort((a, b) => {
+                    const dateA = new Date(a.exit_date || a.entry_date);
+                    const dateB = new Date(b.exit_date || b.entry_date);
+                    return dateA - dateB;
+                });
+                
+                let revengeTradingCount = 0;
+                for (let i = 1; i < sortedTrades.length; i++) {
+                    const prevTrade = sortedTrades[i - 1];
+                    const currentTrade = sortedTrades[i];
+                    
+                    try {
+                        let prevPnL = 0;
+                        if (typeof calculateNetPnl === 'function') {
+                            prevPnL = calculateNetPnl(prevTrade);
+                        }
+                        
+                        const prevPositionSize = (parseFloat(prevTrade.entry_price) || 0) * (parseFloat(prevTrade.quantity) || 0);
+                        const currentPositionSize = (parseFloat(currentTrade.entry_price) || 0) * (parseFloat(currentTrade.quantity) || 0);
+                        
+                        // If previous trade was a loss and current position size is significantly larger
+                        if (prevPnL < -1000 && currentPositionSize > prevPositionSize * 1.5) {
+                            revengeTradingCount++;
+                        }
+                    } catch (error) {
+                        console.warn('AI Analyst: Error analyzing revenge trading pattern', error);
+                    }
+                }
+                
+                if (revengeTradingCount > 0) {
+                    insights.push({
+                        type: 'revenge-trading',
+                        title: 'Revenge Trading Pattern',
+                        description: `Detected ${revengeTradingCount} instances of increased position size after losses.`,
+                        recommendation: 'Take breaks after losses and maintain consistent position sizing.'
+                    });
+                }
+                
+                // Confidence trap detection - winning streaks followed by large losses
+                if (metrics.consecutiveWinStreak >= 5 && metrics.maxDrawdown > 5000) {
+                    insights.push({
+                        type: 'confidence-trap',
+                        title: 'Overconfidence Pattern',
+                        description: 'Long winning streaks may be leading to overconfidence and larger losses.',
+                        recommendation: 'Maintain discipline even during winning streaks. Stick to your risk management rules.'
+                    });
+                }
+                
+                // Mood-based insights based on win rate and consistency
+                if (metrics.winRate < 40 && metrics.totalTrades > 10) {
+                    insights.push({
+                        type: 'low-confidence',
+                        title: 'Low Confidence Pattern',
+                        description: 'Low win rate may indicate lack of confidence or poor entry timing.',
+                        recommendation: 'Review your entry criteria and consider paper trading to build confidence.'
+                    });
+                } else if (metrics.winRate > 80 && metrics.avgWin < metrics.avgLoss) {
+                    insights.push({
+                        type: 'small-wins',
+                        title: 'Risk-Averse Pattern',
+                        description: 'High win rate but small average wins suggest you may be cutting profits too early.',
+                        recommendation: 'Let your winners run longer while maintaining your stop losses.'
+                    });
+                }
+                
+            } catch (error) {
+                console.error('AI Analyst: Error analyzing behavior patterns', error);
+            }
+            
+            return insights;
+        };
+        
+        // Display behavior insights in the UI
+        const displayBehaviorInsights = (insights) => {
+            try {
+                const behaviorContainer = document.getElementById('ai-behavior-insights');
+                if (!behaviorContainer) return;
+                
+                if (insights.length === 0) {
+                    behaviorContainer.innerHTML = `
+                        <div class="text-center py-4">
+                            <i data-feather="smile" class="h-8 w-8 mx-auto mb-2" style="color: #10b981;"></i>
+                            <p style="color: var(--text-primary);">No concerning behavioral patterns detected.</p>
+                            <p class="text-sm mt-1" style="color: var(--text-secondary);">Your trading psychology appears healthy!</p>
+                        </div>
+                    `;
+                } else {
+                    behaviorContainer.innerHTML = insights.map(insight => `
+                        <div class="p-3 rounded-md border-l-4 border-blue-400" style="background-color: var(--bg-secondary);">
+                            <h5 class="font-medium mb-1" style="color: var(--text-primary);">${insight.title}</h5>
+                            <p class="text-sm mb-2" style="color: var(--text-secondary);">${insight.description}</p>
+                            <p class="text-sm font-medium" style="color: var(--text-primary);">${insight.recommendation}</p>
+                        </div>
+                    `).join('');
+                }
+                
+                // Replace feather icons
+                setTimeout(() => feather.replace(), 100);
+            } catch (error) {
+                console.error('AI Analyst: Error displaying behavior insights', error);
+            }
+        };
+        
+        // Update performance sections (Top Winners/Losers)
+        const updatePerformanceSections = (trades, metrics) => {
+            try {
+                // Get closed trades with P&L
+                const closedTrades = trades.filter(t => 
+                    t.exit_date && t.exit_price && 
+                    (t.status === 'Closed' || t.status === 'Partial Exit')
+                );
+                
+                const tradesWithPnL = closedTrades.map(trade => {
+                    let pnl = 0;
+                    try {
+                        if (typeof calculateNetPnl === 'function') {
+                            pnl = calculateNetPnl(trade);
+                        } else {
+                            const entryPrice = parseFloat(trade.entry_price) || 0;
+                            const exitPrice = parseFloat(trade.exit_price) || 0;
+                            const quantity = parseFloat(trade.quantity) || 0;
+                            const direction = trade.direction === 'Short' ? -1 : 1;
+                            pnl = (exitPrice - entryPrice) * quantity * direction;
+                        }
+                    } catch (error) {
+                        console.warn('AI Analyst: Error calculating P&L for performance section', trade.id, error);
+                    }
+                    return { ...trade, pnl };
+                });
+                
+                // Top 5 Winners
+                const topWinners = tradesWithPnL
+                    .filter(t => t.pnl > 0)
+                    .sort((a, b) => b.pnl - a.pnl)
+                    .slice(0, 5);
+                
+                // Top 5 Losers
+                const topLosers = tradesWithPnL
+                    .filter(t => t.pnl < 0)
+                    .sort((a, b) => a.pnl - b.pnl)
+                    .slice(0, 5);
+                
+                // Update Top Winners
+                const winnersContainer = document.getElementById('ai-top-winners');
+                if (winnersContainer) {
+                    if (topWinners.length === 0) {
+                        winnersContainer.innerHTML = '<p class="text-center text-sm" style="color: var(--text-secondary);">No profitable trades yet</p>';
+                    } else {
+                        winnersContainer.innerHTML = topWinners.map((trade, index) => `
+                            <div class="flex justify-between items-center py-2 ${index < topWinners.length - 1 ? 'border-b' : ''}" style="border-color: var(--border-color);">
+                                <div>
+                                    <span class="font-medium" style="color: var(--text-primary);">${trade.asset || 'Unknown'}</span>
+                                    <span class="text-sm ml-2" style="color: var(--text-secondary);">${trade.exit_date ? new Date(trade.exit_date).toLocaleDateString() : ''}</span>
+                                </div>
+                                <span class="font-semibold text-green-600">${formatCurrency(trade.pnl)}</span>
+                            </div>
+                        `).join('');
+                    }
+                }
+                
+                // Update Top Losers
+                const losersContainer = document.getElementById('ai-top-losers');
+                if (losersContainer) {
+                    if (topLosers.length === 0) {
+                        losersContainer.innerHTML = '<p class="text-center text-sm" style="color: var(--text-secondary);">No losing trades yet</p>';
+                    } else {
+                        losersContainer.innerHTML = topLosers.map((trade, index) => `
+                            <div class="flex justify-between items-center py-2 ${index < topLosers.length - 1 ? 'border-b' : ''}" style="border-color: var(--border-color);">
+                                <div>
+                                    <span class="font-medium" style="color: var(--text-primary);">${trade.asset || 'Unknown'}</span>
+                                    <span class="text-sm ml-2" style="color: var(--text-secondary);">${trade.exit_date ? new Date(trade.exit_date).toLocaleDateString() : ''}</span>
+                                </div>
+                                <span class="font-semibold text-red-600">${formatCurrency(trade.pnl)}</span>
+                            </div>
+                        `).join('');
+                    }
+                }
+                
+            } catch (error) {
+                console.error('AI Analyst: Error updating performance sections', error);
+            }
+        };
+        
+        // Update risk discipline panel
+        const updateRiskDisciplinePanel = (metrics, trades) => {
+            try {
+                // Stop Loss Usage
+                const stopLossUsageEl = document.getElementById('ai-stop-loss-usage');
+                if (stopLossUsageEl) {
+                    stopLossUsageEl.textContent = metrics.totalTrades > 0 ? `${metrics.stopLossUsage.toFixed(1)}%` : 'N/A';
+                }
+                
+                // Average Stop Loss
+                const avgStopLossEl = document.getElementById('ai-avg-stop-loss');
+                if (avgStopLossEl) {
+                    avgStopLossEl.textContent = metrics.avgStopLoss > 0 ? formatCurrency(metrics.avgStopLoss) : 'N/A';
+                }
+                
+                // Oversize Positions
+                const oversizePositionsEl = document.getElementById('ai-oversize-positions');
+                if (oversizePositionsEl) {
+                    oversizePositionsEl.textContent = metrics.oversizePositions || 0;
+                }
+                
+            } catch (error) {
+                console.error('AI Analyst: Error updating risk discipline panel', error);
+            }
+        };
+        
+        // Generate AI-style recommendations
+        const generateAIRecommendations = (metrics, trades, traderProfile) => {
+            const recommendations = [];
+            
+            try {
+                // Risk-reward ratio recommendation
+                if (metrics.riskRewardRatio < 1.5 && metrics.totalTrades > 5) {
+                    recommendations.push(`Your average loss is ${(metrics.avgLoss / metrics.avgWin).toFixed(1)}× your average win — consider tightening stops or letting winners run longer.`);
+                }
+                
+                // Win rate vs risk-reward balance
+                if (metrics.winRate < 50 && metrics.riskRewardRatio < 2) {
+                    recommendations.push('With a lower win rate, focus on achieving a risk-reward ratio above 2:1 to maintain profitability.');
+                }
+                
+                // Asset concentration analysis
+                const assetCounts = {};
+                trades.forEach(trade => {
+                    const asset = trade.asset || 'Unknown';
+                    assetCounts[asset] = (assetCounts[asset] || 0) + 1;
+                });
+                
+                const topAsset = Object.keys(assetCounts).reduce((a, b) => assetCounts[a] > assetCounts[b] ? a : b, '');
+                const topAssetPercentage = (assetCounts[topAsset] / trades.length) * 100;
+                
+                if (topAssetPercentage > 60 && trades.length > 10) {
+                    recommendations.push(`${topAssetPercentage.toFixed(0)}% of your trades are in ${topAsset} — consider diversifying across different assets to reduce concentration risk.`);
+                }
+                
+                // Holding period recommendation based on profile
+                if (traderProfile.type === 'The Scalper' && metrics.avgWin < 500) {
+                    recommendations.push('As a scalper, ensure your average wins cover transaction costs — consider targeting slightly higher profit margins.');
+                } else if (traderProfile.type === 'The Swinger' && metrics.avgHoldingDays < 1) {
+                    recommendations.push('Your profile suggests swing trading, but your holding periods are short — consider longer-term setups for better results.');
+                }
+                
+                // Ensure we have at least 4 recommendations by adding general ones
+                while (recommendations.length < 4) {
+                    const generalRecommendations = [
+                        'Maintain a consistent trading journal to track what works and what doesn\'t in your strategy.',
+                        'Review your trades weekly to identify patterns and areas for improvement.',
+                        'Consider position sizing based on volatility — reduce size for more volatile assets.',
+                        'Set realistic daily and monthly P&L targets to maintain consistent performance expectations.'
+                    ];
+                    
+                    const unusedRecommendations = generalRecommendations.filter(rec => !recommendations.includes(rec));
+                    if (unusedRecommendations.length > 0) {
+                        recommendations.push(unusedRecommendations[0]);
+                    } else {
+                        break;
+                    }
+                }
+                
+            } catch (error) {
+                console.error('AI Analyst: Error generating recommendations', error);
+                recommendations.push('Continue developing your trading skills and maintain disciplined risk management.');
+            }
+            
+            return recommendations.slice(0, 4); // Limit to 4 recommendations
+        };
+        
+        // Display AI recommendations
+        const displayAIRecommendations = (recommendations) => {
+            try {
+                const recommendationsContainer = document.getElementById('ai-recommendations');
+                if (!recommendationsContainer) return;
+                
+                recommendationsContainer.innerHTML = recommendations.map((rec, index) => `
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center mr-3" style="background-color: var(--bg-secondary);">
+                            <span class="text-sm font-medium" style="color: var(--text-primary);">${index + 1}</span>
+                        </div>
+                        <p class="text-sm" style="color: var(--text-secondary);">${rec}</p>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('AI Analyst: Error displaying recommendations', error);
+            }
+        };
+        
+        // Update consistency and growth stats
+        const updateConsistencyAndGrowth = (metrics, trades) => {
+            try {
+                // Consistency Score (profitable days percentage)
+                const consistencyScore = metrics.totalTradingDays > 0 ? 
+                    (metrics.profitableDays / metrics.totalTradingDays) * 100 : 0;
+                
+                const consistencyEl = document.getElementById('ai-consistency-score');
+                if (consistencyEl) {
+                    consistencyEl.textContent = `${consistencyScore.toFixed(0)}%`;
+                }
+                
+                // Growth Projection (simplified monthly projection based on recent performance)
+                let monthlyGrowthProjection = 0;
+                if (metrics.totalTrades > 5 && metrics.totalTradingDays > 0) {
+                    const dailyAvgPnL = metrics.totalPnL / metrics.totalTradingDays;
+                    const tradingDaysPerMonth = 22; // Approximate trading days per month
+                    monthlyGrowthProjection = dailyAvgPnL * tradingDaysPerMonth;
+                }
+                
+                const growthProjectionEl = document.getElementById('ai-growth-projection');
+                if (growthProjectionEl) {
+                    growthProjectionEl.textContent = formatCurrency(monthlyGrowthProjection);
+                }
+                
+            } catch (error) {
+                console.error('AI Analyst: Error updating consistency and growth stats', error);
+            }
+        };
+        
+        // Update summary highlight
+        const updateSummaryHighlight = (metrics, traderProfile) => {
+            try {
+                const summaryEl = document.getElementById('ai-summary-highlight');
+                if (!summaryEl) return;
+                
+                let highlight = '';
+                
+                if (metrics.totalTrades === 0) {
+                    highlight = 'Start trading to unlock personalized insights and recommendations.';
+                } else if (metrics.winRate > 70 && metrics.totalPnL > 0) {
+                    highlight = `Excellent performance! ${metrics.winRate.toFixed(0)}% win rate with ${formatCurrency(metrics.totalPnL)} total profit.`;
+                } else if (metrics.totalPnL > 0) {
+                    highlight = `Profitable trading with ${formatCurrency(metrics.totalPnL)} net gain. Focus on consistency.`;
+                } else if (metrics.winRate > 60) {
+                    highlight = `Good win rate at ${metrics.winRate.toFixed(0)}%. Work on letting winners run to improve profitability.`;
+                } else {
+                    highlight = `${traderProfile.type} profile identified. Focus on risk management and strategy refinement.`;
+                }
+                
+                summaryEl.textContent = highlight;
+                
+            } catch (error) {
+                console.error('AI Analyst: Error updating summary highlight', error);
+            }
         };
 
         const createPartialExitDetailsModal = () => {
