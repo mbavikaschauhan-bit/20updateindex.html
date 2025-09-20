@@ -597,9 +597,98 @@
         .trades-table th:nth-child(5), .trades-table td:nth-child(5) { text-align: right; } /* Exit */
         .trades-table th:nth-child(6), .trades-table td:nth-child(6) { text-align: right; } /* P&L */
         
+        /* Edit Trade Modal Styles */
+        #edit-trade-modal .modal-overlay {
+            z-index: 1001; /* Higher than trade details modal */
+        }
+
+        #edit-trade-modal .w-full {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        #edit-trade-modal .max-h-72 {
+            max-height: 45vh;
+        }
+
+        #edit-trade-modal input,
+        #edit-trade-modal textarea {
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #edit-trade-modal input:focus,
+        #edit-trade-modal textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        #edit-trade-modal .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            transition: background-color 0.2s ease;
+        }
+
+        #edit-trade-modal .btn-primary:hover:not(:disabled) {
+            background-color: #2563eb;
+        }
+
+        #edit-trade-modal .btn-primary:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        #edit-trade-modal .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Ultra compact modal styling */
+        #edit-trade-modal .space-y-2 > * + * {
+            margin-top: 0.5rem;
+        }
+
+        #edit-trade-modal .grid {
+            gap: 0.5rem;
+        }
+
+        #edit-trade-modal input,
+        #edit-trade-modal textarea {
+            font-size: 0.75rem;
+            line-height: 1rem;
+            height: 1.5rem;
+        }
+
+        #edit-trade-modal textarea {
+            height: auto;
+            min-height: 1.5rem;
+        }
+
+        #edit-trade-modal label {
+            font-size: 0.75rem;
+            line-height: 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Responsive adjustments for smaller screens */
         @media (max-width: 640px) {
             .trade-details-modal {
+                width: 98%;
+                max-width: none;
+                margin: 1rem;
+            }
+            
+            #edit-trade-modal .w-full {
                 width: 98%;
                 max-width: none;
                 margin: 1rem;
@@ -2541,6 +2630,98 @@
              </div>
         </div>
     </div>
+
+    <!-- Edit Trade Modal -->
+    <div id="edit-trade-modal" class="modal-overlay hidden">
+        <div class="w-full max-w-lg m-4 rounded-lg shadow-xl" style="background-color: var(--bg-primary); border: 1px solid var(--border-color);">
+            <form id="edit-trade-form">
+                <input type="hidden" id="edit-trade-id" name="tradeId">
+                <div class="p-3 border-b flex justify-between items-center" style="border-color: var(--border-color);">
+                    <h3 class="text-base font-semibold" style="color: var(--text-primary);">Edit Trade</h3>
+                    <button type="button" id="edit-trade-close-btn" class="close-modal-btn p-0.5 rounded-full" style="background-color: var(--bg-secondary); color: var(--text-primary);">
+                        <i data-feather="x" class="h-3 w-3"></i>
+                    </button>
+                </div>
+                <div class="p-3 max-h-72 overflow-y-auto">
+                    <!-- Trade Type Tabs -->
+                    <div class="flex space-x-1 mb-3 p-0.5 rounded-lg" style="background-color: var(--bg-secondary);">
+                        <button type="button" id="edit-trade-tab" class="flex-1 py-1 px-2 text-xs font-medium rounded-md transition-colors duration-200" style="background-color: var(--bg-primary); color: var(--text-primary);">
+                            Details
+                        </button>
+                        <button type="button" id="edit-exit-tab" class="flex-1 py-1 px-2 text-xs font-medium rounded-md transition-colors duration-200" style="color: var(--text-secondary);">
+                            Exit
+                        </button>
+                    </div>
+
+                    <!-- Trade Details Tab Content -->
+                    <div id="edit-trade-content" class="space-y-2">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label for="edit-symbol" class="block text-xs font-medium mb-0.5" style="color: var(--text-primary);">Symbol</label>
+                                <input type="text" id="edit-symbol" name="symbol" required class="w-full rounded border focus:border-blue-500 focus:ring-blue-500 text-xs" style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color); padding: 0.2rem;">
+                            </div>
+                            <div>
+                                <label for="edit-quantity" class="block text-xs font-medium mb-0.5" style="color: var(--text-primary);">Quantity</label>
+                                <input type="number" id="edit-quantity" name="quantity" step="0.01" required class="w-full rounded border focus:border-blue-500 focus:ring-blue-500 text-xs" style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color); padding: 0.2rem;">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label for="edit-entry-price" class="block text-xs font-medium mb-0.5" style="color: var(--text-primary);">Entry Price</label>
+                                <input type="number" id="edit-entry-price" name="entry_price" step="0.01" required class="w-full rounded border focus:border-blue-500 focus:ring-blue-500 text-xs" style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color); padding: 0.2rem;">
+                            </div>
+                            <div>
+                                <label for="edit-entry-date" class="block text-xs font-medium mb-0.5" style="color: var(--text-primary);">Entry Date</label>
+                                <input type="date" id="edit-entry-date" name="entry_date" required class="w-full rounded border focus:border-blue-500 focus:ring-blue-500 text-xs" style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color); padding: 0.2rem;">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label for="edit-exit-price" class="block text-xs font-medium mb-0.5" style="color: var(--text-primary);">Exit Price</label>
+                                <input type="number" id="edit-exit-price" name="exit_price" step="0.01" class="w-full rounded border focus:border-blue-500 focus:ring-blue-500 text-xs" style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color); padding: 0.2rem;">
+                            </div>
+                            <div>
+                                <label for="edit-exit-date" class="block text-xs font-medium mb-0.5" style="color: var(--text-primary);">Exit Date</label>
+                                <input type="date" id="edit-exit-date" name="exit_date" class="w-full rounded border focus:border-blue-500 focus:ring-blue-500 text-xs" style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color); padding: 0.2rem;">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="edit-reasons" class="block text-xs font-medium mb-0.5" style="color: var(--text-primary);">Notes</label>
+                            <textarea name="reasons" id="edit-reasons" rows="1" class="w-full rounded border focus:border-blue-500 focus:ring-blue-500 text-xs" style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color); padding: 0.2rem;" placeholder="Notes..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Exit Trade Tab Content -->
+                    <div id="edit-exit-content" class="space-y-2 hidden">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label for="edit-exit-quantity" class="block text-xs font-medium mb-0.5" style="color: var(--text-primary);">Exit Qty</label>
+                                <input type="number" id="edit-exit-quantity" name="exit_quantity" step="0.01" class="w-full rounded border focus:border-blue-500 focus:ring-blue-500 text-xs" style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color); padding: 0.2rem;">
+                            </div>
+                            <div>
+                                <label for="edit-exit-price-exit" class="block text-xs font-medium mb-0.5" style="color: var(--text-primary);">Exit Price</label>
+                                <input type="number" id="edit-exit-price-exit" name="exit_price_exit" step="0.01" class="w-full rounded border focus:border-blue-500 focus:ring-blue-500 text-xs" style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color); padding: 0.2rem;">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="edit-exit-date-exit" class="block text-xs font-medium mb-0.5" style="color: var(--text-primary);">Exit Date</label>
+                            <input type="date" id="edit-exit-date-exit" name="exit_date_exit" class="w-full rounded border focus:border-blue-500 focus:ring-blue-500 text-xs" style="background-color: var(--bg-primary); color: var(--text-primary); border-color: var(--border-color); padding: 0.2rem;">
+                        </div>
+                    </div>
+                </div>
+                <div class="p-2 border-t flex justify-between items-center" style="background-color: var(--bg-secondary); border-color: var(--border-color);">
+                    <button type="button" id="edit-trade-reset-btn" class="border font-medium py-1 px-2 rounded text-xs" style="background-color: var(--bg-primary); border-color: var(--border-color); color: var(--text-primary);" onclick="resetEditModalButtonState()">Reset</button>
+                    <div class="flex space-x-1">
+                        <button type="button" id="edit-trade-cancel-btn" class="close-modal-btn border font-medium py-1 px-2 rounded text-xs" style="background-color: var(--bg-primary); border-color: var(--border-color); color: var(--text-primary);">Cancel</button>
+                        <button type="submit" id="edit-trade-submit-btn" class="btn-primary font-medium py-1 px-3 rounded shadow-sm flex items-center justify-center min-w-[100px] text-xs">
+                            <span class="btn-text">Save</span>
+                            <span class="spinner hidden"></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
         
     <!-- Scroll to Top Button -->
     <button id="scroll-to-top-btn" class="hidden fixed bottom-8 right-8 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 z-20">
@@ -3830,7 +4011,7 @@
                     e.preventDefault();
                     e.stopPropagation();
                     
-                    // Find the trade and populate the form
+                    // Find the trade and populate the modal
                     const trade = appState.trades.find(x => String(x.id) === String(id));
                     if (!trade) {
                         console.error('Trade not found for ID:', id);
@@ -3839,86 +4020,8 @@
                     
                     console.log('Found trade:', trade);
                     
-                    // Populate form with trade data - with defensive checks
-                    const setFieldValue = (fieldId, value) => {
-                        const field = document.getElementById(fieldId);
-                        if (field) {
-                            field.value = value || '';
-                        } else {
-                            console.warn(`Form field not found: ${fieldId}`);
-                        }
-                    };
-                    
-                    setFieldValue('trade-id', trade.id);
-                    setFieldValue('asset-input', trade.asset);
-                    
-                    // Split entry datetime into date and time
-                    if (trade.entry_date) {
-                        const entryDateTime = new Date(trade.entry_date);
-                        if (!isNaN(entryDateTime.getTime())) {
-                            setFieldValue('entry-date', entryDateTime.toISOString().split('T')[0]);
-                            setFieldValue('entry-time', entryDateTime.toTimeString().slice(0, 5));
-                        } else {
-                            console.warn('Invalid entry_date in form editing:', trade.entry_date, 'for trade:', trade);
-                            setFieldValue('entry-date', '');
-                            setFieldValue('entry-time', '');
-                        }
-                    } else {
-                        setFieldValue('entry-date', '');
-                        setFieldValue('entry-time', '');
-                    }
-                    
-                    setFieldValue('entry-price', trade.entry_price);
-                    setFieldValue('quantity', trade.quantity);
-                    setFieldValue('stop-loss', trade.stop_loss);
-                    setFieldValue('target', trade.target);
-                    
-                    // Split exit datetime into date and time
-                    if (trade.exit_date) {
-                        const exitDateTime = new Date(trade.exit_date);
-                        if (!isNaN(exitDateTime.getTime())) {
-                            setFieldValue('exit-date', exitDateTime.toISOString().split('T')[0]);
-                            setFieldValue('exit-time', exitDateTime.toTimeString().slice(0, 5));
-                        } else {
-                            console.warn('Invalid exit_date in form editing:', trade.exit_date, 'for trade:', trade);
-                            setFieldValue('exit-date', '');
-                            setFieldValue('exit-time', '');
-                        }
-                    } else {
-                        setFieldValue('exit-date', '');
-                        setFieldValue('exit-time', '');
-                    }
-                    
-                    setFieldValue('exit-price', trade.exit_price);
-                    setFieldValue('exit-quantity', trade.exit_quantity);
-                    setFieldValue('brokerage', trade.brokerage);
-                    setFieldValue('other-fees', trade.other_fees);
-                    setFieldValue('direction', trade.direction || 'Long');
-                    setFieldValue('segment', trade.segment || 'Equity');
-                    setFieldValue('trading-style', trade.tradingStyle || 'Intraday');
-                    setFieldValue('strategy', trade.strategy || 'Price Action');
-                    setFieldValue('outcome-summary', trade.outcomeSummary);
-                    setFieldValue('emotional-state', trade.emotionalState);
-                    setFieldValue('reasons', trade.reasons);
-                    
-                    // Clear all mistake checkboxes first
-                    document.querySelectorAll('input[name="mistakes"]').forEach(checkbox => {
-                        checkbox.checked = false;
-                    });
-                    
-                    // Check the mistakes that were previously selected
-                    if (trade.mistakes && Array.isArray(trade.mistakes)) {
-                        trade.mistakes.forEach(mistake => {
-                            const checkbox = document.querySelector(`input[name="mistakes"][value="${mistake}"]`);
-                            if (checkbox) {
-                                checkbox.checked = true;
-                            }
-                        });
-                    }
-                    
-                    updateCalculations();
-                    navigateTo('add-trade');
-                    console.log('Edit completed - navigated to add-trade page');
+                    // Populate edit modal with trade data
+                    showEditTradeModal(trade);
                     
                 } else if (action === 'delete') {
                     e.preventDefault();
@@ -4614,6 +4717,173 @@
                 console.error('showTradeDetailsModal error', e);
             }
         };
+
+        // Function to show edit trade modal
+        const showEditTradeModal = (trade) => {
+            try {
+                const modal = document.getElementById('edit-trade-modal');
+                if (!modal) {
+                    console.error('Edit trade modal not found');
+                    return;
+                }
+
+                // Set the trade ID
+                document.getElementById('edit-trade-id').value = trade.id;
+
+                // Populate form fields with trade data
+                const setFieldValue = (fieldId, value) => {
+                    const field = document.getElementById(fieldId);
+                    if (field) {
+                        field.value = value || '';
+                    } else {
+                        console.warn(`Edit modal field not found: ${fieldId}`);
+                    }
+                };
+
+                // Populate basic trade details
+                setFieldValue('edit-symbol', trade.asset || trade.symbol);
+                setFieldValue('edit-quantity', trade.quantity);
+                setFieldValue('edit-entry-price', trade.entry_price);
+                
+                // Handle entry date
+                if (trade.entry_date) {
+                    const entryDateTime = new Date(trade.entry_date);
+                    if (!isNaN(entryDateTime.getTime())) {
+                        setFieldValue('edit-entry-date', entryDateTime.toISOString().split('T')[0]);
+                    } else {
+                        setFieldValue('edit-entry-date', '');
+                    }
+                } else {
+                    setFieldValue('edit-entry-date', '');
+                }
+
+                // Handle exit details
+                setFieldValue('edit-exit-price', trade.exit_price);
+                if (trade.exit_date) {
+                    const exitDateTime = new Date(trade.exit_date);
+                    if (!isNaN(exitDateTime.getTime())) {
+                        setFieldValue('edit-exit-date', exitDateTime.toISOString().split('T')[0]);
+                    } else {
+                        setFieldValue('edit-exit-date', '');
+                    }
+                } else {
+                    setFieldValue('edit-exit-date', '');
+                }
+
+                // Handle exit trade tab fields
+                setFieldValue('edit-exit-quantity', trade.exit_quantity);
+                setFieldValue('edit-exit-price-exit', trade.exit_price);
+                if (trade.exit_date) {
+                    const exitDateTime = new Date(trade.exit_date);
+                    if (!isNaN(exitDateTime.getTime())) {
+                        setFieldValue('edit-exit-date-exit', exitDateTime.toISOString().split('T')[0]);
+                    } else {
+                        setFieldValue('edit-exit-date-exit', '');
+                    }
+                } else {
+                    setFieldValue('edit-exit-date-exit', '');
+                }
+
+                // Populate notes
+                setFieldValue('edit-reasons', trade.reasons);
+
+                // Reset button state before showing modal
+                resetEditModalButtonState();
+
+                // Show the modal
+                modal.classList.remove('hidden');
+
+                // Replace feather icons
+                feather.replace();
+
+            } catch (e) {
+                console.error('showEditTradeModal error', e);
+            }
+        };
+
+        // Function to hide edit trade modal
+        const hideEditTradeModal = () => {
+            const modal = document.getElementById('edit-trade-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        };
+
+        // Function to reset edit modal button state
+        const resetEditModalButtonState = () => {
+            console.log('resetEditModalButtonState called');
+            const submitBtn = document.getElementById('edit-trade-submit-btn');
+            const btnText = submitBtn?.querySelector('.btn-text');
+            const spinner = submitBtn?.querySelector('.spinner');
+            
+            console.log('Button elements found:', { submitBtn: !!submitBtn, btnText: !!btnText, spinner: !!spinner });
+            
+            if (submitBtn && btnText && spinner) {
+                btnText.textContent = 'Save';
+                spinner.classList.add('hidden');
+                submitBtn.disabled = false;
+                console.log('Button state reset successfully');
+            } else {
+                console.error('Could not find button elements for reset');
+            }
+        };
+
+        // Global function to force reset edit modal (can be called from console)
+        window.forceResetEditModal = () => {
+            console.log('Force resetting edit modal...');
+            resetEditModalButtonState();
+            hideEditTradeModal();
+        };
+
+        // Test function to simulate form submission without actual processing
+        window.testEditForm = () => {
+            console.log('Testing edit form submission...');
+            const submitBtn = document.getElementById('edit-trade-submit-btn');
+            const btnText = submitBtn?.querySelector('.btn-text');
+            const spinner = submitBtn?.querySelector('.spinner');
+            
+            if (submitBtn && btnText && spinner) {
+                // Show loading state
+                btnText.textContent = 'Testing...';
+                spinner.classList.remove('hidden');
+                submitBtn.disabled = true;
+                
+                // Simulate processing
+                setTimeout(() => {
+                    btnText.textContent = 'Save';
+                    spinner.classList.add('hidden');
+                    submitBtn.disabled = false;
+                    console.log('Test completed - button should be reset');
+                }, 2000);
+            } else {
+                console.error('Could not find button elements for test');
+            }
+        };
+
+        // Function to switch between edit modal tabs
+        const switchEditModalTab = (tabName) => {
+            const tradeTab = document.getElementById('edit-trade-tab');
+            const exitTab = document.getElementById('edit-exit-tab');
+            const tradeContent = document.getElementById('edit-trade-content');
+            const exitContent = document.getElementById('edit-exit-content');
+
+            if (tabName === 'trade') {
+                tradeTab.style.backgroundColor = 'var(--bg-primary)';
+                tradeTab.style.color = 'var(--text-primary)';
+                exitTab.style.backgroundColor = 'transparent';
+                exitTab.style.color = 'var(--text-secondary)';
+                tradeContent.classList.remove('hidden');
+                exitContent.classList.add('hidden');
+            } else if (tabName === 'exit') {
+                exitTab.style.backgroundColor = 'var(--bg-primary)';
+                exitTab.style.color = 'var(--text-primary)';
+                tradeTab.style.backgroundColor = 'transparent';
+                tradeTab.style.color = 'var(--text-secondary)';
+                exitContent.classList.remove('hidden');
+                tradeContent.classList.add('hidden');
+            }
+        };
+
         const renderReports = () => {
             try {
                 // Render original Performance Metrics
@@ -8713,6 +8983,168 @@
                 document.querySelector('#trading-style-group button[data-value="Intraday"]')?.classList.add('active', 'active-green');
                 console.log('Default button states initialized');
             }, 200);
+
+            // Edit Trade Modal Event Listeners
+            const editModal = document.getElementById('edit-trade-modal');
+            const editCloseBtn = document.getElementById('edit-trade-close-btn');
+            const editCancelBtn = document.getElementById('edit-trade-cancel-btn');
+            const editSubmitBtn = document.getElementById('edit-trade-submit-btn');
+            const editTradeTab = document.getElementById('edit-trade-tab');
+            const editExitTab = document.getElementById('edit-exit-tab');
+            const editForm = document.getElementById('edit-trade-form');
+
+            // Close modal events
+            editCloseBtn?.addEventListener('click', () => {
+                resetEditModalButtonState();
+                hideEditTradeModal();
+            });
+            editCancelBtn?.addEventListener('click', () => {
+                resetEditModalButtonState();
+                hideEditTradeModal();
+            });
+
+            // Tab switching events
+            editTradeTab?.addEventListener('click', () => switchEditModalTab('trade'));
+            editExitTab?.addEventListener('click', () => switchEditModalTab('exit'));
+
+            // Add observer to monitor modal visibility changes
+            const modal = document.getElementById('edit-trade-modal');
+            if (modal) {
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                            const isHidden = modal.classList.contains('hidden');
+                            if (!isHidden) {
+                                // Modal is being shown, reset button state
+                                console.log('Modal shown - resetting button state');
+                                resetEditModalButtonState();
+                            }
+                        }
+                    });
+                });
+                observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
+
+                // Add click listener to modal overlay to reset button state
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        console.log('Modal overlay clicked - resetting button state');
+                        resetEditModalButtonState();
+                        hideEditTradeModal();
+                    }
+                });
+
+                // Add keyboard listener for Escape key
+                const handleKeyDown = (e) => {
+                    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+                        console.log('Escape key pressed - resetting button state');
+                        resetEditModalButtonState();
+                        hideEditTradeModal();
+                    }
+                };
+                document.addEventListener('keydown', handleKeyDown);
+            }
+
+            // Form submission - SIMPLIFIED APPROACH
+            editForm?.addEventListener('submit', (e) => {
+                e.preventDefault();
+                console.log('Form submit event triggered');
+                
+                const submitBtn = editSubmitBtn;
+                const btnText = submitBtn.querySelector('.btn-text');
+                const spinner = submitBtn.querySelector('.spinner');
+                
+                // Validate elements exist
+                if (!submitBtn || !btnText || !spinner) {
+                    console.error('Edit form elements not found');
+                    return;
+                }
+                
+                // Show loading state
+                btnText.textContent = 'Saving...';
+                spinner.classList.remove('hidden');
+                submitBtn.disabled = true;
+                console.log('Loading state set');
+
+                // Use setTimeout to ensure the UI updates before processing
+                setTimeout(async () => {
+                    try {
+                        console.log('Starting edit form submission...');
+                        
+                        const formData = new FormData(editForm);
+                        const tradeId = formData.get('tradeId');
+                        
+                        if (!tradeId) {
+                            throw new Error('No trade ID found');
+                        }
+                        
+                        console.log('Form data collected, tradeId:', tradeId);
+                        
+                        // Find the trade to update
+                        const tradeIndex = appState.trades.findIndex(t => String(t.id) === String(tradeId));
+                        if (tradeIndex === -1) {
+                            throw new Error(`Trade not found with ID: ${tradeId}`);
+                        }
+                        
+                        console.log('Found trade at index:', tradeIndex);
+
+                        // Update trade data
+                        const updatedTrade = {
+                            ...appState.trades[tradeIndex],
+                            asset: formData.get('symbol'),
+                            quantity: parseFloat(formData.get('quantity')),
+                            entry_price: parseFloat(formData.get('entry_price')),
+                            entry_date: formData.get('entry_date') ? new Date(formData.get('entry_date')).toISOString() : null,
+                            exit_price: formData.get('exit_price') ? parseFloat(formData.get('exit_price')) : null,
+                            exit_date: formData.get('exit_date') ? new Date(formData.get('exit_date')).toISOString() : null,
+                            exit_quantity: formData.get('exit_quantity') ? parseFloat(formData.get('exit_quantity')) : null,
+                            reasons: formData.get('reasons')
+                        };
+
+                        console.log('Updated trade data prepared');
+
+                        // Update in data store
+                        console.log('Calling dataStore.upsertTrade...');
+                        try {
+                            await dataStore.upsertTrade(updatedTrade);
+                            console.log('dataStore.upsertTrade completed successfully');
+                        } catch (dbError) {
+                            console.error('Database error:', dbError);
+                            // Continue with local update even if database fails
+                            console.log('Continuing with local update despite database error');
+                        }
+                        
+                        // Update local state
+                        appState.trades[tradeIndex] = updatedTrade;
+                        console.log('Local state updated');
+                        
+                        // Refresh displays
+                        renderTradeHistory();
+                        renderDashboard();
+                        console.log('Displays refreshed');
+                        
+                        console.log('Trade updated successfully');
+                        
+                        // SUCCESS - Reset button and close modal
+                        console.log('SUCCESS: Resetting button state');
+                        btnText.textContent = 'Save';
+                        spinner.classList.add('hidden');
+                        submitBtn.disabled = false;
+                        hideEditTradeModal();
+                        console.log('SUCCESS: Modal closed');
+                        
+                    } catch (error) {
+                        console.error('ERROR in form submission:', error);
+                        alert('Error updating trade: ' + error.message);
+                        
+                        // ERROR - Reset button state
+                        console.log('ERROR: Resetting button state');
+                        btnText.textContent = 'Save';
+                        spinner.classList.add('hidden');
+                        submitBtn.disabled = false;
+                        console.log('ERROR: Button state reset');
+                    }
+                }, 100); // Small delay to ensure UI updates
+            });
         });
 
         // External Tooltip Support for Chart.js
