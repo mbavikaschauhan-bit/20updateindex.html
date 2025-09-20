@@ -2934,6 +2934,30 @@
             const year = d.getFullYear();
             return `${day}-${month}-${year}`;
         };
+
+        // Helper function to format date as DD-MM-YYYY for display (handles both YYYY-MM-DD and YYYY-MM-DDTHH:MM:SS formats)
+        const formatDateForDisplay = (dateString) => {
+            if (!dateString) return '';
+            
+            // Handle both date-only and datetime formats
+            let datePart;
+            if (dateString.includes('T')) {
+                // ISO datetime format: 2024-01-15T10:30:00
+                datePart = dateString.split('T')[0];
+            } else {
+                // Date-only format: 2024-01-15
+                datePart = dateString;
+            }
+            
+            // Validate the date format
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(datePart)) {
+                return dateString; // Return original if invalid format
+            }
+            
+            // Convert YYYY-MM-DD to DD-MM-YYYY
+            const [year, month, day] = datePart.split('-');
+            return `${day}-${month}-${year}`;
+        };
         
         const countTradingDays = (startDate, endDate) => {
             let count = 0;
@@ -3660,14 +3684,14 @@
             tradesBtn?.addEventListener('click', () => {
                 const trades = JSON.parse(localStorage.getItem('trades') || '[]') || [];
                 const header = ['ID','Symbol','Direction','Entry Date','Entry Price','Qty','Exit Date','Exit Price','Brokerage','Other Fees','Strategy','Outcome','Notes'];
-                const rows = trades.map(t => [t.id, t.asset, t.direction, t.entry_date, t.entry_price, t.quantity, t.exit_date||'', t.exit_price||'', t.brokerage||0, t.other_fees||0, t.strategy||'', t.outcomeSummary||'', t.reasons||'']);
+                const rows = trades.map(t => [t.id, t.asset, t.direction, formatDateForDisplay(t.entry_date), t.entry_price, t.quantity, formatDateForDisplay(t.exit_date)||'', t.exit_price||'', t.brokerage||0, t.other_fees||0, t.strategy||'', t.outcomeSummary||'', t.reasons||'']);
                 downloadCsv('trades.csv', [header, ...rows]);
             });
             const ledgerBtn = document.getElementById('export-ledger-csv');
             ledgerBtn?.addEventListener('click', () => {
                 const ledger = JSON.parse(localStorage.getItem('ledger') || '[]') || [];
                 const header = ['ID','Date','Type','Amount','Notes'];
-                const rows = ledger.map(l => [l.id, l.date, l.type, l.amount, l.notes||'']);
+                const rows = ledger.map(l => [l.id, formatDateForDisplay(l.date), l.type, l.amount, l.notes||'']);
                 downloadCsv('ledger.csv', [header, ...rows]);
             });
             const statementBtn = document.getElementById('export-statement-csv');
@@ -3678,9 +3702,9 @@
                     const gross = (t.exit_price && t.exit_date) ? ((t.exit_price - t.entry_price) * (t.quantity||0)) : 0;
                     const charges = (t.brokerage||0)+(t.other_fees||0);
                     const net = gross - charges;
-                    return [t.exit_date||t.entry_date||'', 'Trade', t.asset||'', t.strategy||'', gross, charges, net, '', t.outcomeSummary||''];
+                    return [formatDateForDisplay(t.exit_date||t.entry_date)||'', 'Trade', t.asset||'', t.strategy||'', gross, charges, net, '', t.outcomeSummary||''];
                 });
-                const ledgerRows = ledger.map(l => [l.date||'', l.type, l.type, '—', '', '', '', l.amount||0, l.notes||'']);
+                const ledgerRows = ledger.map(l => [formatDateForDisplay(l.date)||'', l.type, l.type, '—', '', '', '', l.amount||0, l.notes||'']);
                 const header = ['Date','Type','Symbol/Desc','Strategy','Gross P/L','Charges','Net P/L','Amount (₹)','Notes'];
                 downloadCsv('statement.csv', [header, ...tradeRows, ...ledgerRows]);
             });
@@ -3712,11 +3736,11 @@
                             </td>
                             <td class="px-6 py-3">${t.entry_price ?? '—'}</td>
                             <td class="px-6 py-3">${type}</td>
-                            <td class="px-6 py-3">${t.entry_date || '—'}</td>
+                            <td class="px-6 py-3">${formatDateForDisplay(t.entry_date) || '—'}</td>
                             <td class="px-6 py-3">${t.stop_loss ?? '—'}</td>
                             <td class="px-6 py-3">${t.quantity ?? '—'}</td>
                             <td class="px-6 py-3">${t.exit_price ?? '—'}</td>
-                            <td class="px-6 py-3">${t.exit_date || '—'}</td>
+                            <td class="px-6 py-3">${formatDateForDisplay(t.exit_date) || '—'}</td>
                             <td class="px-6 py-3 actions-cell">
                                 ${isClosed ? 
                                     // Closed trades: Show Edit and Delete icons only
@@ -4070,7 +4094,7 @@
                 if (tbody) {
                     tbody.innerHTML = appState.ledger.map(item => `
                         <tr>
-                            <td class="px-6 py-3">${item.date || '—'}</td>
+                            <td class="px-6 py-3">${formatDateForDisplay(item.date) || '—'}</td>
                             <td class="px-6 py-3">${item.type}</td>
                             <td class="px-6 py-3">${formatCurrency(item.amount || 0)}</td>
                             <td class="px-6 py-3">${item.notes || '—'}</td>
@@ -4169,17 +4193,28 @@
                     if (!isClosed && !isPartialExit) return;
                     
                     // Validate exit_date before converting
-                    const exitDate = new Date(t.exit_date);
-                    if (isNaN(exitDate.getTime())) {
-                        console.warn('Invalid exit_date in calendar PnL:', t.exit_date, 'for trade:', t);
-                        return; // Skip this trade
+                    // Use date parsing that avoids timezone conversion issues
+                    let d;
+                    if (t.exit_date.includes('T')) {
+                        // ISO format: 2024-01-15T10:30:00 - extract date part only
+                        d = t.exit_date.split('T')[0];
+                    } else {
+                        // Date only format: 2024-01-15 - use as is
+                        d = t.exit_date;
                     }
                     
-                    const d = exitDate.toISOString().slice(0,10);
+                    // Validate the date format
+                    if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) {
+                        console.warn('Invalid exit_date format in calendar PnL:', t.exit_date, 'for trade:', t);
+                        return; // Skip this trade
+                    }
                     // Use the same calculateNetPnl function used throughout the app for consistency
                     const pnl = calculateNetPnl(t);
                     pnlByDate[d] = (pnlByDate[d] || 0) + pnl;
                     tradesCountByDate[d] = (tradesCountByDate[d] || 0) + 1;
+                    
+                    // Debug logging to help identify date matching issues
+                    console.log(`Calendar: Trade ${t.asset} with exit_date ${t.exit_date} mapped to date ${d}, PnL: ${pnl}`);
                     
                 });
 
@@ -4191,8 +4226,25 @@
                     
                     if (!isClosed && !isPartialExit) return false;
                     
-                    const tradeDate = new Date(t.exit_date);
-                    return tradeDate.getFullYear() === year && tradeDate.getMonth() === month;
+                    // Use date parsing that avoids timezone conversion issues
+                    let tradeDateStr;
+                    if (t.exit_date.includes('T')) {
+                        // ISO format: 2024-01-15T10:30:00 - extract date part only
+                        tradeDateStr = t.exit_date.split('T')[0];
+                    } else {
+                        // Date only format: 2024-01-15 - use as is
+                        tradeDateStr = t.exit_date;
+                    }
+                    
+                    // Validate the date format
+                    if (!/^\d{4}-\d{2}-\d{2}$/.test(tradeDateStr)) {
+                        console.warn('Invalid exit_date format in current month filter:', t.exit_date, 'for trade:', t);
+                        return false;
+                    }
+                    
+                    // Parse the date string to get year and month
+                    const [tradeYear, tradeMonth] = tradeDateStr.split('-').map(Number);
+                    return tradeYear === year && (tradeMonth - 1) === month; // month is 0-indexed in Date object
                 });
 
                 let totalPnl = 0, totalTrades = 0, wins = 0, losses = 0, totalRisk = 0, totalReward = 0;
@@ -4291,9 +4343,15 @@
 
                         if (cellIndex >= startPad && dayCounter <= daysInMonth) {
                             const dateObj = new Date(year, month, dayCounter);
-                            const iso = dateObj.toISOString().slice(0,10);
+                            // Create ISO date string directly to avoid timezone conversion issues
+                            const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(dayCounter).padStart(2, '0')}`;
                             const pnl = pnlByDate[iso] || 0;
                             const tCount = tradesCountByDate[iso] || 0;
+                            
+                            // Debug logging for calendar cell creation
+                            if (tCount > 0) {
+                                console.log(`Calendar cell ${dayCounter}: Created date ${iso}, found ${tCount} trades with PnL ${pnl}`);
+                            }
                             monthlyPnl += pnl;
                             const isUp = pnl > 0; const isDown = pnl < 0;
                             const borderColor = isUp ? '#c7f0d5' : isDown ? '#f5c7c7' : 'var(--border-color)';
@@ -4345,7 +4403,9 @@
                     const endDateOfRow = new Date(year, month, Math.min(daysInMonth, (w+1)*7 - startPad));
                     let weekPnl = 0; let activeDays = 0;
                     for (let cd = new Date(startDateOfRow); cd <= endDateOfRow; cd.setDate(cd.getDate()+1)) {
-                        const iso = cd.toISOString().slice(0,10);
+                        // Create ISO date string directly to avoid timezone conversion issues
+                        const day = cd.getDate();
+                        const iso = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                         if (iso.slice(0,7) === `${year}-${String(month+1).padStart(2,'0')}`) {
                             const v = pnlByDate[iso] || 0;
                             weekPnl += v;
@@ -4441,13 +4501,22 @@
                     if (!isClosed && !isPartialExit) return false;
                     
                     // Validate exit_date before converting
-                    const exitDate = new Date(t.exit_date);
-                    if (isNaN(exitDate.getTime())) {
-                        console.warn('Invalid exit_date in calendar filter:', t.exit_date, 'for trade:', t);
+                    // Use date parsing that avoids timezone conversion issues
+                    let tradeDate;
+                    if (t.exit_date.includes('T')) {
+                        // ISO format: 2024-01-15T10:30:00 - extract date part only
+                        tradeDate = t.exit_date.split('T')[0];
+                    } else {
+                        // Date only format: 2024-01-15 - use as is
+                        tradeDate = t.exit_date;
+                    }
+                    
+                    // Validate the date format
+                    if (!/^\d{4}-\d{2}-\d{2}$/.test(tradeDate)) {
+                        console.warn('Invalid exit_date format in calendar filter:', t.exit_date, 'for trade:', t);
                         return false; // Skip this trade
                     }
                     
-                    const tradeDate = exitDate.toISOString().slice(0, 10);
                     return tradeDate === dateISO;
                 });
 
@@ -4477,12 +4546,12 @@
                 const avgRR = totalRisk > 0 ? (totalReward / totalRisk) : 0;
 
                 // Update modal content
-                modalDate.textContent = dateObj.toLocaleDateString('en-US', { 
+                const displayDate = formatDateForDisplay(dateISO);
+                modalDate.textContent = `${dateObj.toLocaleDateString('en-US', { 
                     weekday: 'long', 
-                    year: 'numeric', 
                     month: 'long', 
                     day: 'numeric' 
-                });
+                })} (${displayDate})`;
                 
                 modalTotalPnl.textContent = formatCurrency(totalPnl);
                 modalTotalPnl.style.color = totalPnl >= 0 ? '#22c55e' : '#ef4444';
@@ -4958,7 +5027,7 @@
                     const charges = (t.brokerage || 0) + (t.other_fees || 0);
                     const net = gross - charges;
                     return {
-                        date: t.exit_date || t.entry_date || '—',
+                        date: formatDateForDisplay(t.exit_date || t.entry_date) || '—',
                         type: 'Trade',
                         symbol: t.asset || '—',
                         strategy: t.strategy || '—',
@@ -4970,7 +5039,7 @@
                     };
                 });
                 const ledgerRows = ledger.map(l => ({
-                    date: l.date || '—',
+                    date: formatDateForDisplay(l.date) || '—',
                     type: l.type,
                     symbol: l.type,
                     strategy: '—',
@@ -6058,7 +6127,22 @@
                                 .filter(trade => {
                                     if (!trade.exit_date) return false;
                                     try {
-                                        const tradeDate = new Date(trade.exit_date).toISOString().split('T')[0];
+                                        // Use date parsing that avoids timezone conversion issues
+                                        let tradeDate;
+                                        if (trade.exit_date.includes('T')) {
+                                            // ISO format: 2024-01-15T10:30:00 - extract date part only
+                                            tradeDate = trade.exit_date.split('T')[0];
+                                        } else {
+                                            // Date only format: 2024-01-15 - use as is
+                                            tradeDate = trade.exit_date;
+                                        }
+                                        
+                                        // Validate the date format
+                                        if (!/^\d{4}-\d{2}-\d{2}$/.test(tradeDate)) {
+                                            console.warn('Invalid exit_date format in PnL calculation:', trade.exit_date);
+                                            return false;
+                                        }
+                                        
                                         return tradeDate <= date;
                                     } catch (e) {
                                         console.warn('Error comparing trade exit date:', trade.exit_date, e);
